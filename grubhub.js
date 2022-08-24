@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Grubhub Ad-Remover
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Remove sponsored results and ads on Grubhub
 // @author       BL
 // @match        https://www.grubhub.com/search*
@@ -14,9 +14,7 @@
 // ==/UserScript==
 /* global $, waitForKeyElements */
 
-waitForKeyElements('.searchResults-wrapper', runner);
-
-function runner(node) {
+function removeSponsored(ignored) {
     'use strict';
 
     var spans = document.querySelectorAll('[data-testid="sponsored-result"]');
@@ -26,3 +24,9 @@ function runner(node) {
         span.remove();
     }
 };
+
+waitForKeyElements('.searchResults-wrapper', function(node) {
+    var observer = new MutationObserver(removeSponsored);
+    observer.observe(document.getElementsByClassName('searchResults-wrapper')[0], {attributes: true, childList: true, characterData: false, subtree:true});
+});
+
