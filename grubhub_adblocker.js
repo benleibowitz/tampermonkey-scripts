@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Grubhub Ad-Remover
+// @name         Grubhub AdBlocker
 // @namespace    http://tampermonkey.net/
-// @version      0.3
-// @description  Remove sponsored results and ads on Grubhub
+// @version      0.4
+// @description  Removes sponsored results and ads on Grubhub
 // @author       BL
 // @match        https://www.grubhub.com/*
 // @match        https://grubhub.com/*
