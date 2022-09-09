@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Grubhub AdBlocker
+// @name         Grubhub Ad-Remover
 // @namespace    http://tampermonkey.net/
-// @version      0.4
-// @description  Removes sponsored results and ads on Grubhub
+// @version      0.2
+// @description  Remove sponsored results and ads on Grubhub
 // @author       BL
 // @match        https://www.grubhub.com/*
 // @match        https://grubhub.com/*
@@ -14,9 +14,9 @@
 // ==/UserScript==
 /* global $, waitForKeyElements */
 
-function removeSponsored(ignored) {
-    'use strict';
+'use strict';
 
+function removeSponsored(ignored) {
     var spans = document.querySelectorAll('[data-testid="sponsored-result"]');
     for (var i = 0; i < spans.length; i++) {
         var span = spans[i];
@@ -31,3 +31,19 @@ waitForKeyElements('.searchResults-wrapper', function(node) {
     observer.observe(document.getElementsByClassName('searchResults-wrapper')[0], {attributes: true, childList: true, characterData: false, subtree:true});
 });
 
+waitForKeyElements('div[data-testid="homepage-upsell-mini-bar"]', function(node) {
+    node.remove();
+});
+
+waitForKeyElements('span[data-testid="mini-bar-upsell"]', function(node) {
+    node.remove();
+});
+
+waitForKeyElements('#select-sort', function() {
+    if (JSON.parse(document.getElementById('select-sort').value).sort_id === 'default') {
+        var url = new URL(window.location.href);
+        url.searchParams.set('sorts', 'delivery_estimate');
+        console.log('Redirecting to include Delivery Estimate sort value');
+        window.location.href = url.href;
+    }
+});
