@@ -41,11 +41,11 @@ function cleanFooter(node) {
 }
 
 function cleanActionItems(node) {
-    document.querySelector('div[data-test-id="closeup-action-items"]').remove();
+    node.remove();
 }
 
 function cleanRelatedCarousel(node) {
-    document.querySelector('div[data-test-id="related-domain-carousel"]').remove();
+    node.remove();
 }
 
 function cleanShopButtonsFromBoard(node) {
@@ -71,10 +71,18 @@ function cleanPicture(node) {
     photoContainer.remove();
 }
 
+function cleanWelcomeBackModal(node) {
+    var docs = document.getElementsByClassName('ALa Jea LCN Lej Rym _he gjz mQ8 ojN p6V urM zI7 iyn Hsu');
+    if (docs.length == 1) {
+        docs[0].remove();
+        console.log('Cleaned "welcome back" modal');
+    }
+}
+
 (function clean() {
     setInterval(function() {
         document.title = "Pinterest";
-    }, 250);
+    }, 1000);
 
     /*
     waitForKeyElements('title', function(node) {
@@ -138,6 +146,8 @@ function cleanPicture(node) {
     waitForKeyElements('div[data-test-id="related-domain-carousel"]', function(node) {
         cleanRelatedCarousel(node);
     });
+
+    waitForKeyElements('div[class="ALa Jea LCN Lej Rym _he gjz mQ8 ojN p6V urM zI7 iyn Hsu"]', function(node) {
+        cleanWelcomeBackModal(node);
+    });
 })();
-
-
