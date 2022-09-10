@@ -61,6 +61,9 @@ function cleanShopButtonsFromBoard(node) {
 
 function cleanPicture(node) {
     var photoContainer = document.querySelector('div[data-test-id="visual-content-container"]');
+    if (photoContainer.querySelector('div[data-test-id="carousel-pin"]') != null) {
+        return;
+    }
     var descriptionContainer = document.querySelector('div[data-test-id="description-content-container"]');
     var photoContainerParentElement = photoContainer.parentElement;
     var photoURL = document.querySelector('div[data-test-id="closeup-image"]').firstChild.firstChild.children[1].firstChild.firstChild.src;
@@ -79,21 +82,14 @@ function cleanWelcomeBackModal(node) {
     }
 }
 
+function cleanProductInfo(node) {
+     node[0].parentElement.parentElement.parentElement.remove();
+}
+
 (function clean() {
     setInterval(function() {
         document.title = "Pinterest";
     }, 1000);
-
-    /*
-    waitForKeyElements('title', function(node) {
-        document.getElementsByTagName('title')[0].textContent = 'Pinterest';
-        var observer = new MutationObserver(function() {
-            document.getElementsByTagName('title')[0].textContent = 'Pinterest';
-            observer.disconnect();
-        });
-        observer.observe(document.getElementsByTagName('title')[0], {attributes: false, childList: true, characterData: false, subtree: false});
-    });
-    */
 
     for (var i = 0; i < 3; i++) {
         document.querySelector('div[data-test-id="button-container"]').firstChild.remove();
@@ -149,5 +145,9 @@ function cleanWelcomeBackModal(node) {
 
     waitForKeyElements('div[class="ALa Jea LCN Lej Rym _he gjz mQ8 ojN p6V urM zI7 iyn Hsu"]', function(node) {
         cleanWelcomeBackModal(node);
+    });
+
+    waitForKeyElements('div[data-test-id="product-price"]', function(node) {
+        cleanProductInfo(node);
     });
 })();
