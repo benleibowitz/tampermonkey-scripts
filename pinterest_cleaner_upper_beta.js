@@ -102,14 +102,11 @@ function cleanProductInfo(node) {
     }
 
     var currentURL = window.location.href;
-    //if (new RegExp('.*pinterest.com(/?)$').test(currentURL) ||
-    //    new RegExp('.*pinterest.com/(search|pin).*').test(currentURL)) {
-        waitForKeyElements('div[role="list"]', function(node) {
-            stopVideos(node);
-            var observer = new MutationObserver(stopVideos);
-            observer.observe(document.querySelector('div[role="list"]'), {attributes: false, childList: true, characterData: false, subtree: false});
-        });
-    //}
+    waitForKeyElements('div[role="list"]', function(node) {
+        stopVideos(node);
+        var observer = new MutationObserver(stopVideos);
+        observer.observe(document.querySelector('div[role="list"]'), {attributes: true, childList: true, characterData: false, subtree: false});
+    });
 
     waitForKeyElements('div[data-test-id="creator-card-profile"]', function(node) {
         var observer = new MutationObserver(cleanDescription);
