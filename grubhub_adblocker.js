@@ -47,3 +47,9 @@ waitForKeyElements('#select-sort', function() {
         window.location.href = url.href;
     }
 });
+
+// Get rid of the Premium signup modal
+waitForKeyElements('#chiri-modal', function(node) {
+    node.getElementsByTagName('a')[2].click();
+    console.log('Clicked "Dismiss" on the GrubHub+ Sign Up modal');
+});
