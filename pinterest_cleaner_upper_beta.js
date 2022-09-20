@@ -16,6 +16,12 @@
 
 'use strict';
 
+function waitAndRemove(toRemove) {
+    waitForKeyElements(toRemove, function(node) {
+        node.remove();
+    });
+}
+
 function stopVideos(ignored) {
     var videos = document.getElementsByTagName('video');
     for (var i = 0; i < videos.length; i++) {
@@ -38,14 +44,6 @@ function cleanComments(node) {
 
 function cleanFooter(node) {
     document.getElementsByClassName('footerButtons')[0].firstChild.remove();
-}
-
-function cleanActionItems(node) {
-    node.remove();
-}
-
-function cleanRelatedCarousel(node) {
-    node.remove();
 }
 
 function cleanShopButtonsFromBoard(node) {
@@ -132,14 +130,6 @@ function cleanProductInfo(node) {
         cleanPicture(node);
     });
 
-    waitForKeyElements('div[data-test-id="closeup-action-items"]', function(node) {
-        cleanActionItems(node);
-    });
-
-    waitForKeyElements('div[data-test-id="related-domain-carousel"]', function(node) {
-        cleanRelatedCarousel(node);
-    });
-
     waitForKeyElements('div[class="ALa Jea LCN Lej Rym _he gjz mQ8 ojN p6V urM zI7 iyn Hsu"]', function(node) {
         cleanWelcomeBackModal(node);
     });
@@ -147,4 +137,8 @@ function cleanProductInfo(node) {
     waitForKeyElements('div[data-test-id="product-price"]', function(node) {
         cleanProductInfo(node);
     });
+
+    waitAndRemove('div[class="MMr kKU zI7 iyn Hsu"]');
+    waitAndRemove('div[data-test-id="related-domain-carousel"]');
+    waitAndRemove('div[data-test-id="closeup-action-items"]');
 })();
