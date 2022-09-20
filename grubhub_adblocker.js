@@ -16,6 +16,12 @@
 
 'use strict';
 
+function waitAndRemove(toWaitFor) {
+    waitForKeyElements(toWaitFor, function(node) {
+        node.remove();
+    });
+}
+
 function removeSponsored(ignored) {
     var spans = document.querySelectorAll('[data-testid="sponsored-result"]');
     for (var i = 0; i < spans.length; i++) {
@@ -31,15 +37,7 @@ waitForKeyElements('.searchResults-wrapper', function(node) {
     observer.observe(document.getElementsByClassName('searchResults-wrapper')[0], {attributes: true, childList: true, characterData: false, subtree:true});
 });
 
-waitForKeyElements('div[data-testid="homepage-upsell-mini-bar"]', function(node) {
-    node.remove();
-});
-
-waitForKeyElements('span[data-testid="mini-bar-upsell"]', function(node) {
-    node.remove();
-});
-
-waitForKeyElements('#select-sort', function() {
+waitForKeyElements('#select-sort', function(node) {
     if (JSON.parse(document.getElementById('select-sort').value).sort_id === 'default') {
         var url = new URL(window.location.href);
         url.searchParams.set('sorts', 'delivery_estimate');
@@ -53,3 +51,15 @@ waitForKeyElements('#chiri-modal', function(node) {
     node.getElementsByTagName('a')[2].click();
     console.log('Clicked "Dismiss" on the GrubHub+ Sign Up modal');
 });
+
+// That's a lot of upselling...
+var toRemove = [
+  'div[data-testid="homepage-upsell-mini-bar"]',
+  'span[data-testid="mini-bar-upsell"]',
+  'div[data-testid="subscription-container-rebrand"]',
+  'div[data-testid="checkout-review-donation-section"]',
+  'div[data-testid="subscription-upsell-banner"]'
+];
+for (var i = 0; i < toRemove.length; i++) {
+    waitAndRemove(toRemove[i]);
+}
