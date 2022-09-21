@@ -54,6 +54,9 @@ function cleanShopButtonsFromBoard(node) {
         buttons[1].remove();
     } else if (buttons.length == 2) {
         buttons[0].remove();
+    } else if (buttons.length == 3) {
+        buttons[0].remove();
+        buttons[1].remove();
     }
 }
 
