@@ -15,7 +15,7 @@
 
 'use strict';
 
-function ignoreNotifications(node) {
+function ignoreNotifications() {
     waitForKeyElements('button[class="_a9-- _a9_1"]', function(node) {
         var popups = document.getElementsByClassName('_a9-v');
         if (popups.length == 1) {
@@ -23,13 +23,47 @@ function ignoreNotifications(node) {
             if (popupsChildren.length == 3) {
                 if (popupsChildren[1].firstChild.textContent === 'Turn on Notifications') {
                     node.click();
-                    console.log('Clicked "Not now" on notification popup');
+                    console.debug('Clicked "Not now" on notification popup');
                 }
             }
         }
     });
 }
 
+function stopAutoplay() {
+    waitForKeyElements('div[class="_ab8w  _ab94 _ab99 _ab9f _ab9m _ab9p  _abc0 _abcm"]', function(node) {
+        var observer = new MutationObserver(function() {
+            console.debug('Looking for videos to stop');
+            var videos = document.getElementsByTagName('video');
+            for (var i = 0; i < videos.length; i++) {
+                var video = videos[i];
+                if (!video.paused) {
+                    video.autoplay = false;
+                    video.pause();
+                    video.currentTime = 0;
+                    console.debug('Stopped video');
+                }
+            }
+        });
+        observer.observe(document.getElementsByClassName('_ab8w  _ab94 _ab99 _ab9f _ab9m _ab9p  _abc0 _abcm')[0].firstChild.firstChild, {attributes: true, childList: true, characterData: false, subtree: true});
+    });
+}
+
+function cleanAcres() {
+    waitForKeyElements('div[class="_acre"]', function(node) {
+        node.remove();
+    });
+}
+
 (function() {
-    ignoreNotifications();
+    var oneTapRegex = new RegExp('https://.*instagram.com/accounts/onetap/*');
+    if (oneTapRegex.test(window.location.href)) {
+        waitForKeyElements('button[class="_acan _acao _acas"]', function(node) {
+            document.getElementsByClassName('_acan _acao _acas')[0].click();
+        });
+    } else {
+        ignoreNotifications();
+        stopAutoplay();
+        cleanAcres();
+    }
 })();
