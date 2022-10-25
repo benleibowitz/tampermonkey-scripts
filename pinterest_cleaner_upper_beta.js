@@ -23,13 +23,16 @@ function waitAndRemove(toRemove) {
 }
 
 function stopVideos(ignored) {
+
     var videos = document.getElementsByTagName('video');
     for (var i = 0; i < videos.length; i++) {
         var video = videos[i];
-        video.pause();
-        video.setAttribute('autoplay', 'false');
-        video.currentTime = 0;
-        console.log('Video stopped!');
+
+        var pic = document.createElement('img');
+        pic.src = video.poster;
+        video.parentElement.appendChild(pic);
+        video.remove();
+        console.log('Converted video to pic');
     }
 };
 
@@ -48,6 +51,7 @@ function cleanFooter(node) {
 
 function cleanShopButtonsFromBoard(node) {
     var buttons = document.querySelector('div[data-test-id="board-header"]').nextElementSibling.firstChild.firstChild.children;
+
     if (buttons.length == 4) {
         buttons[0].remove();
         buttons[0].remove();
