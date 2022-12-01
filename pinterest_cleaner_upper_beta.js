@@ -42,7 +42,9 @@ function cleanDescription(node) {
 }
 
 function cleanComments(node) {
-    document.getElementById('canonical-card').remove();
+    for (var i = 0; i < 3; i++) {
+        document.querySelector('div[data-test-id="description-content-container"]').children[0].children[1].remove();
+    }
 }
 
 function cleanFooter(node) {
