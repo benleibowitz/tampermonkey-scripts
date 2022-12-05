@@ -23,6 +23,22 @@ function removeNotificationBadge() {
             notifications[0].remove();
         }
     });
+
+    waitForKeyElements('.notification-badge', function(node) {
+        node.remove();
+    });
+}
+
+function removeProfilePrompts() {
+    waitForKeyElements('#promo', function(node) {
+        node[0].parentElement.remove();
+    });
+    waitForKeyElements('#guidance', function(node) {
+        node[0].parentElement.remove();
+    });
+    waitForKeyElements('#resources', function(node) {
+        node[0].parentElement.remove();
+    });
 }
 
 function removeRightSidebar() {
@@ -34,6 +50,9 @@ function removeRightSidebar() {
 function removeUpsellLinks() {
     waitForKeyElements('.premium-upsell-link--extra-long', function(node) {
         node.remove();
+    });
+    waitForKeyElements('.premium-upsell-link', function(node) {
+        node[0].remove();
     });
     waitForKeyElements('span[class="global-nav__secondary-premium-cta-text"]', function(node) {
        node[0].parentElement.parentElement.parentElement.remove();
@@ -51,4 +70,5 @@ function removeRightSidebarOnProfile() {
     removeRightSidebar();
     removeUpsellLinks();
     removeRightSidebarOnProfile();
+    removeProfilePrompts();
 })();
