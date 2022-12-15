@@ -42,7 +42,7 @@ function cleanDescription(node) {
 }
 
 function cleanComments(node) {
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < 2; i++) {
         document.querySelector('div[data-test-id="description-content-container"]').children[0].children[1].remove();
     }
 }
