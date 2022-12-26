@@ -23,7 +23,6 @@ function waitAndRemove(toRemove) {
 }
 
 function stopVideos(ignored) {
-
     var videos = document.getElementsByTagName('video');
     for (var i = 0; i < videos.length; i++) {
         var video = videos[i];
@@ -52,7 +51,7 @@ function cleanFooter(node) {
 }
 
 function cleanShopButtonsFromBoard(node) {
-    var buttons = document.querySelector('div[data-test-id="board-header"]').nextElementSibling.firstChild.firstChild.children;
+    var buttons = document.querySelector('div[data-test-id="board-tools"]').firstChild.children;
 
     if (buttons.length == 4) {
         buttons[0].remove();
@@ -82,7 +81,7 @@ function cleanPicture(node) {
 }
 
 function cleanWelcomeBackModal(node) {
-    var docs = document.getElementsByClassName('ALa Jea LCN Lej Rym _he gjz mQ8 ojN p6V urM zI7 iyn Hsu');
+    var docs = node;
     if (docs.length == 1) {
         docs[0].remove();
         console.log('Cleaned "welcome back" modal');
@@ -131,7 +130,7 @@ function cleanProductInfo(node) {
         cleanFooter(node);
     });
 
-    waitForKeyElements('div[data-test-id="board-header"]', function(node) {
+    waitForKeyElements('div[data-test-id="board-tools"]', function(node) {
         cleanShopButtonsFromBoard(node);
     });
 
@@ -140,6 +139,9 @@ function cleanProductInfo(node) {
     });
 
     waitForKeyElements('div[class="ALa Jea LCN Lej Rym _he gjz mQ8 ojN p6V urM zI7 iyn Hsu"]', function(node) {
+        cleanWelcomeBackModal(node);
+    });
+    waitForKeyElements('div[class="ALa Jea KS5 LCN Lej Rym _he mQ8 ojN p6V urM zI7 iyn Hsu"]', function(node) {
         cleanWelcomeBackModal(node);
     });
 
