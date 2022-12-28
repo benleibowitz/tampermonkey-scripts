@@ -53,15 +53,15 @@ function cleanFooter(node) {
 function cleanShopButtonsFromBoard(node) {
     var buttons = document.querySelector('div[data-test-id="board-tools"]').firstChild.children;
 
-    if (buttons.length == 4) {
-        buttons[0].remove();
-        buttons[0].remove();
-        buttons[1].remove();
-    } else if (buttons.length == 2) {
-        buttons[0].remove();
-    } else if (buttons.length == 3) {
-        buttons[0].remove();
-        buttons[1].remove();
+    var idx = 0;
+    var buttonsLength = buttons.length;
+    for (var i = 0; i < buttonsLength; i++) {
+        if (buttons[idx].textContent.toLowerCase() != 'organize') {
+            console.log('Removing button: ' + buttons[idx].textContent);
+            buttons[idx].remove();
+        } else {
+            idx++;
+        }
     }
 }
 
