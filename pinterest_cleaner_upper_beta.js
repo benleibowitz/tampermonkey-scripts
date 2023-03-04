@@ -41,9 +41,13 @@ function cleanDescription(node) {
 }
 
 function cleanComments(node) {
-    for (var i = 0; i < 2; i++) {
-        document.querySelector('div[data-test-id="description-content-container"]').children[0].children[1].remove();
-    }
+    waitForKeyElements('div[data-test-id="description-content-container"]', function(node) {
+        document.querySelector('div[data-test-id="description-content-container"]').children[1].remove();
+
+    });
+    waitForKeyElements('div[class="jzS ujU un8 C9i TB_"]', function(node) {
+        node[0].remove()
+    });
 }
 
 function cleanFooter(node) {
@@ -153,3 +157,4 @@ function cleanProductInfo(node) {
     waitAndRemove('div[data-test-id="related-domain-carousel"]');
     waitAndRemove('div[data-test-id="closeup-action-items"]');
 })();
+
