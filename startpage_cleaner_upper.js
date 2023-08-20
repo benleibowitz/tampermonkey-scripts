@@ -14,5 +14,8 @@
     document.getElementsByClassName('block-display')[0].remove();
     document.getElementsByClassName('ay-eo-tpcl ay-eo-tpcl--')[0].remove();
     document.getElementsByClassName('w-gl__label')[0].remove();
+    document.getElementsByClassName('layout-web__footer')[0].remove();
+    document.getElementsByClassName('css-1pducxn')[0].remove();
+    document.getElementsByClassName('css-1o12sfa')[0].remove();
     document.getElementById('feedback-button-container').remove();
 })();
