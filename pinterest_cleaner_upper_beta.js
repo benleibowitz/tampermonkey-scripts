@@ -80,7 +80,7 @@ function cleanPicture(node) {
     var photoIMG = document.createElement('img');
     photoIMG.setAttribute('src', photoURL);
 
-    photoContainerParentElement.insertBefore(photoIMG, descriptionContainer);
+    photoContainerParentElement.insertBefore(photoIMG, photoContainerParentElement.childNodes[0]);
     photoContainer.remove();
 }
 
@@ -97,6 +97,7 @@ function cleanProductInfo(node) {
 }
 
 (function clean() {
+    console.log('Running');
     setInterval(function() {
         document.title = "Pinterest";
     }, 1000);
@@ -156,5 +157,27 @@ function cleanProductInfo(node) {
     waitAndRemove('div[class="MMr kKU zI7 iyn Hsu"]');
     waitAndRemove('div[data-test-id="related-domain-carousel"]');
     waitAndRemove('div[data-test-id="closeup-action-items"]');
+
+    waitForKeyElements('div[class="hs0 ujU un8 C9i TB_"]', function(nodes) {
+        var promotedRegex = new RegExp('([.][a-zA-Z0-9]{5}:before\s*.*[Promoted].*){7}');
+        for (var i = 0; i < nodes.length; i++) {
+             if (promotedRegex.test(nodes[i].textContent)) {
+                 var parentListItem = nodes[i].closest('div[role="listitem"]');
+                 var matrix = new WebKitCSSMatrix(window.getComputedStyle(parentListItem).transform);
+                 var targetXCoord = matrix.e;
+                 var current = nodes[i];
+                 current = current.previousSibling;
+                 while (current != null) {
+                     var currentXCoord = new WebKitCSSMatrix(window.getComputedStyle(current).transform);
+                     if (currentXCoord == targetXCoord) {
+                         console.log('Removed promoted pin');
+                         current.remove();
+                         break;
+                     }
+                     current = current.previousSibling;
+                 }
+             }
+        }
+    });
 })();
 
