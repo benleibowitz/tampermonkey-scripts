@@ -35,6 +35,7 @@ function blockPrimeSignupInCheckout() {
 
 function removeUpsellBannerInCart() {
     removeNode('#sc-new-upsell');
+    removeNode('ms3-selection[data-slot="PrimeUpsell"]');
 }
 
 function removePrimeUpsellBannerFromProductDetailPage() {
