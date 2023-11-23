@@ -40,6 +40,10 @@ function removeUpsellBannerInCart() {
 
 function removePrimeUpsellBannerFromProductDetailPage() {
     removeNode('#primeDPUpsellContainer');
+    removeNode('#primeExclusivePricingMessage');
+    removeNode('#primeSavingsUpsellAccordionRow');
+    removeNode('#snsAccordionRowMiddle');
+    document.getElementById('newAccordionRow_1').querySelector('i').click();
 }
 
 function clickThroughPrimeUpsellInterstitial() {
@@ -59,21 +63,36 @@ function removeUpsellBannerInSmartCart() {
     removeNode('#sw-maple');
 }
 
+function removeUpsellBannersOnThankYouPage() {
+    removeNode('ms3-selection[data-slot="CheckoutThankYou_ThankYouBox"]');
+    removeNode('#marketing');
+    removeNode('div[cel_widget_id="typ-mapleSlot"]');
+}
+
+function blockSubscribeAndSaveInCheckout() {
+    removeNode('#sns-item-0');
+}
+
 (function() {
     const cartView = new RegExp('https://www[.]amazon[.]com/gp/cart/view[.]html');
+    const cartViewNonGP = new RegExp('https://www[.]amazon[.]com/cart');
     const primeUpsellInterstitial = new RegExp('https://www[.]amazon[.]com/gp/buy/primeinterstitial/.*');
     const checkoutPage = new RegExp('https://www[.]amazon[.]com/gp/buy/spc/handlers/display[.]html.*');
     const smartCartPage = new RegExp('https://www[.]amazon[.]com/cart/smart-wagon.*');
+    const thankYouPage = new RegExp('https://www[.]amazon[.]com/gp/buy/thankyou/.*');
     const currentURL = window.location.href;
 
-    if (cartView.test(currentURL)) {
+    if (cartView.test(currentURL) || cartViewNonGP.test(currentURL)) {
         removeUpsellBannerInCart();
     } else if (primeUpsellInterstitial.test(currentURL)) {
         clickThroughPrimeUpsellInterstitial();
     } else if (checkoutPage.test(currentURL)) {
         blockPrimeSignupInCheckout();
+        blockSubscribeAndSaveInCheckout();
     } else if (smartCartPage.test(currentURL)) {
         removeUpsellBannerInSmartCart();
+    } else if (thankYouPage.test(currentURL)) {
+        removeUpsellBannersOnThankYouPage();
     } else {
         removePrimeUpsellBannerFromProductDetailPage();
     }
