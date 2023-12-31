@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      0.0.1
 // @description  Remove Wikipedia donation banners
-// @author       You
+// @author       Ben Leibowitz
 // @match        https://en.wikipedia.org/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=wikipedia.org
 // @grant        none
