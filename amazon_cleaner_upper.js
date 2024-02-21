@@ -43,7 +43,17 @@ function removePrimeUpsellBannerFromProductDetailPage() {
     removeNode('#primeExclusivePricingMessage');
     removeNode('#primeSavingsUpsellAccordionRow');
     removeNode('#snsAccordionRowMiddle');
-    document.getElementById('newAccordionRow_1').querySelector('i').click();
+    document.getElementById('newAccordionRow_1')?.querySelector('i')?.click();
+    removeNode('.a-section .price-block-text');
+    removeNode('#buyItOnAB_feature_div');
+    removeNode('#b2bUpsell_feature_div');
+    removeNode('#mbb_feature_div');
+    removeNode('#simpleBundleV2_feature_div');
+
+    waitForKeyElements('#attach-warranty-pane', function(node) {
+        console.trace('Clicking \'No thanks\' on warrantee upsell');
+        node[0]?.querySelector('input[aria-labelledby="attachSiNoCoverage-announce"]')?.click();
+    });
 }
 
 function clickThroughPrimeUpsellInterstitial() {
