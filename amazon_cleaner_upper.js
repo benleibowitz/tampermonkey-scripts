@@ -49,6 +49,8 @@ function removePrimeUpsellBannerFromProductDetailPage() {
     removeNode('#b2bUpsell_feature_div');
     removeNode('#mbb_feature_div');
     removeNode('#simpleBundleV2_feature_div');
+    removeNode('.maple-banner');
+    removeNode('#valuePick_container');
 
     waitForKeyElements('#attach-warranty-pane', function(node) {
         console.trace('Clicking \'No thanks\' on warrantee upsell');
@@ -107,3 +109,4 @@ function blockSubscribeAndSaveInCheckout() {
         removePrimeUpsellBannerFromProductDetailPage();
     }
 })();
+
