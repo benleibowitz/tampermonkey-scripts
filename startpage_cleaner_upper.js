@@ -6,16 +6,50 @@
 // @author       You
 // @match        https://www.startpage.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=startpage.com
-// @grant        none
+// @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
+// @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
+// @grant        GM_addStyle
+// @grant        GM.getValue
+// @sandbox      Javascript
+// @license     MIT
 // ==/UserScript==
+/* global $, waitForKeyElements */
+
+function removeFirstOrIgnore(arr) {
+    if (arr && arr.length > 0) {
+        arr[0].remove();
+        return true;
+    }
+    return false;
+}
 
 (function() {
     'use strict';
-    document.getElementsByClassName('block-display')[0].remove();
-    document.getElementsByClassName('ay-eo-tpcl ay-eo-tpcl--')[0].remove();
-    document.getElementsByClassName('w-gl__label')[0].remove();
-    document.getElementsByClassName('layout-web__footer')[0].remove();
-    document.getElementsByClassName('css-1pducxn')[0].remove();
-    document.getElementsByClassName('css-1o12sfa')[0].remove();
-    document.getElementById('feedback-button-container').remove();
+    removeFirstOrIgnore(document.getElementsByClassName('w-gl-attribution'));
+    removeFirstOrIgnore(document.getElementsByClassName('serp-sidebar-app-promo-widget'));
+    removeFirstOrIgnore(document.getElementsByClassName('block-display'));
+    removeFirstOrIgnore(document.getElementsByClassName('ay-eo-tpcl ay-eo-tpcl--'));
+    removeFirstOrIgnore(document.getElementsByClassName('w-gl__label'));
+    removeFirstOrIgnore(document.getElementsByClassName('layout-web__footer'));
+    removeFirstOrIgnore(document.getElementsByClassName('css-1pducxn'));
+    removeFirstOrIgnore(document.getElementsByClassName('css-1o12sfa'));
+    removeFirstOrIgnore(document.getElementsByClassName('css-1mkwc5o'));
+    document.getElementById('feedback-button-container')?.remove();
+    document.querySelector('div[role="contentinfo"]').remove()
+
+    var mainContainer = document.getElementById('main');
+
+    const callback = (mutationList, observer) => {
+        for (const mutation of mutationList) {
+            var ad = document.querySelector('div[class^="css-1mkwc5o"]');
+            if (ad != null) {
+                ad.remove();
+                console.debug('Removed that pesky StartPage ad');
+            }
+        }
+    };
+
+    const observer = new MutationObserver(callback);
+    observer.observe(mainContainer, {attributes: false, childList: true, subtree: true});
+
 })();
