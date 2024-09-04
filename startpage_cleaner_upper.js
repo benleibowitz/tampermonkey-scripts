@@ -34,6 +34,8 @@ function removeFirstOrIgnore(arr) {
     removeFirstOrIgnore(document.getElementsByClassName('css-1pducxn'));
     removeFirstOrIgnore(document.getElementsByClassName('css-1o12sfa'));
     removeFirstOrIgnore(document.getElementsByClassName('css-1mkwc5o'));
+    removeFirstOrIgnore(document.getElementsByClassName('feedback-serp-container'));
+    removeFirstOrIgnore(document.getElementsByTagName('footer'));
     document.getElementById('feedback-button-container')?.remove();
     document.querySelector('div[role="contentinfo"]').remove()
 
