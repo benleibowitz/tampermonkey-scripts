@@ -15,6 +15,8 @@
 // ==/UserScript==
 /* global $, waitForKeyElements */
 
+const MERCHANT_QUERY_PARAM = 'srsltid';
+
 function removeFirstOrIgnore(arr) {
     if (arr && arr.length > 0) {
         arr[0].remove();
@@ -23,8 +25,60 @@ function removeFirstOrIgnore(arr) {
     return false;
 }
 
+/**
+ * Remove the Google Merchant / Shopping query param from any links we click
+ */
+function removeSrsltidParam(url) {
+    let urlObj = new URL(url);
+    urlObj.searchParams.delete('srsltid');
+    return urlObj.toString();
+}
+
+function onStartpageLinkClick(event) {
+    let target = event.target;
+
+    if (target.tagName !== 'A') {
+        target = target.closest('a');
+    }
+
+    if (target && target.tagName === 'A') {
+        event.preventDefault();
+
+        let newHref = removeSrsltidParam(target.href);
+
+        target.href = newHref;
+        window.location.href = newHref;
+    }
+}
+
+function cleanSrsltids() {
+    var links = document.getElementById('main').querySelectorAll('a');
+    for (var i = 0; i < links.length; i++) {
+        var a = links[i];
+        if (!a.href) {
+            continue;
+        }
+
+        var url = new URL(a.href);
+        if (url.searchParams.has(MERCHANT_QUERY_PARAM)) {
+            url.searchParams.delete(MERCHANT_QUERY_PARAM);
+            a.href = url.toString();
+            a.linkText = url.toString();
+            a.ariaLabel = url.toString();
+            var linkText = a.querySelector('span[class="link-text"]');
+            if (linkText) {
+                linkText.innerText = url.toString();
+            }
+        }
+    }
+}
+
 (function() {
     'use strict';
+    document.addEventListener('click', onStartpageLinkClick, true);
+
+    cleanSrsltids();
+
     removeFirstOrIgnore(document.getElementsByClassName('w-gl-attribution'));
     removeFirstOrIgnore(document.getElementsByClassName('serp-sidebar-app-promo-widget'));
     removeFirstOrIgnore(document.getElementsByClassName('block-display'));
@@ -53,5 +107,4 @@ function removeFirstOrIgnore(arr) {
     const observer = new MutationObserver(callback);
     observer.observe(mainContainer, {attributes: false, childList: true, subtree: true});
 
-    const mainSection = document.getElementById('main');
 })();
