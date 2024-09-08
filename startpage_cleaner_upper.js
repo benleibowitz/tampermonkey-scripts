@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Startpage Cleaner Upper
 // @namespace    https://www.benleibowitz.rocks
-// @version      1.0.1
+// @version      1.0.2
 // @description  Clean up unnecessary clutter on startpage.com
 // @author       Ben Leibowitz
 // @match        https://www.startpage.com/*
@@ -12,6 +12,8 @@
 // @grant        GM.getValue
 // @sandbox      Javascript
 // @license      MIT
+// @updateURL    https://github.com/benleibowitz/tampermonkey-scripts/raw/master/startpage_cleaner_upper.js
+// @downloadURL  https://github.com/benleibowitz/tampermonkey-scripts/raw/master/startpage_cleaner_upper.js
 // ==/UserScript==
 /* global $, waitForKeyElements */
 
