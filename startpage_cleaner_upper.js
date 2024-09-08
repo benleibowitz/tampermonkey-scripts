@@ -76,7 +76,6 @@ function cleanSrsltids() {
 (function() {
     'use strict';
     document.addEventListener('click', onStartpageLinkClick, true);
-
     cleanSrsltids();
 
     removeFirstOrIgnore(document.getElementsByClassName('w-gl-attribution'));
@@ -89,8 +88,12 @@ function cleanSrsltids() {
     removeFirstOrIgnore(document.getElementsByClassName('css-1o12sfa'));
     removeFirstOrIgnore(document.getElementsByClassName('css-1mkwc5o'));
     document.getElementById('feedback-button-container')?.remove();
-    document.querySelector('div[role="contentinfo"]').remove();
+    document.querySelector('div[role="contentinfo"]')?.remove();
     document.getElementsByTagName('footer')[0].remove();
+    var feedbackWidgets = document.getElementsByClassName('feedback-widget');
+    for (const feedbackWidget of feedbackWidgets) {
+        feedbackWidget.remove();
+    }
 
     var mainContainer = document.getElementById('main');
 
