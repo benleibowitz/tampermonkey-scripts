@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Startpage Cleaner Upper
 // @namespace    https://www.benleibowitz.rocks
-// @version      1.0
+// @version      1.0.1
 // @description  Clean up unnecessary clutter on startpage.com
 // @author       Ben Leibowitz
 // @match        https://www.startpage.com/*
