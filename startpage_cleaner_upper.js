@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Startpage Cleaner Upper
 // @namespace    https://www.benleibowitz.rocks
-// @version      1.0
+// @version      1.0.4
 // @description  Clean up unnecessary clutter on startpage.com
 // @author       Ben Leibowitz
 // @match        https://www.startpage.com/*
@@ -179,6 +179,7 @@ function addFavicons() {
   removeFirstOrIgnore(
     document.getElementsByClassName("ay-eo-tpcl ay-eo-tpcl--"),
   );
+  removeFirstOrIgnore(document.getElementsByClassName("feedback-serp-container"));
   removeFirstOrIgnore(document.getElementsByClassName("w-gl__label"));
   removeFirstOrIgnore(document.getElementsByClassName("layout-web__footer"));
   removeFirstOrIgnore(document.getElementsByClassName("css-1pducxn"));
