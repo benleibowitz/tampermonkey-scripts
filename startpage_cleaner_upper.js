@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Startpage Cleaner Upper
 // @namespace    https://www.benleibowitz.rocks
-// @version      1.0.2
+// @version      1.0.3
 // @description  Clean up unnecessary clutter on startpage.com
 // @author       Ben Leibowitz
 // @match        https://www.startpage.com/*
@@ -12,8 +12,6 @@
 // @grant        GM.getValue
 // @sandbox      Javascript
 // @license      MIT
-// @updateURL    https://github.com/benleibowitz/tampermonkey-scripts/raw/master/startpage_cleaner_upper.js
-// @downloadURL  https://github.com/benleibowitz/tampermonkey-scripts/raw/master/startpage_cleaner_upper.js
 // ==/UserScript==
 /* global $, waitForKeyElements */
 
@@ -94,8 +92,82 @@ function cleanSrsltids() {
   }
 }
 
+function centerSearchForm() {
+  window.addEventListener("load", function () {
+    const searchFormContainer = document.querySelector(
+      ".search-form-relative-container",
+    );
+
+    if (searchFormContainer) {
+      const parentContainer = searchFormContainer.parentElement;
+
+      if (parentContainer) {
+        parentContainer.style.position = "relative";
+      }
+
+      searchFormContainer.style.position = "absolute";
+      searchFormContainer.style.top = "50%";
+      searchFormContainer.style.left = "50%";
+      searchFormContainer.style.transform = "translate(-50%, -50%)";
+    } else {
+      console.log(
+        'Element with class "search-form-relative-container" not found.',
+      );
+    }
+  });
+}
+
+function centerSearchResults() {
+  window.addEventListener("load", function () {
+    const searchResultsContainer = document.querySelector("#main");
+
+    if (searchResultsContainer) {
+      const parentContainer = searchResultsContainer.parentElement;
+
+      if (parentContainer) {
+        parentContainer.style.position = "relative";
+      }
+
+      searchResultsContainer.style.position = "absolute";
+      searchResultsContainer.style.top = "55%";
+      searchResultsContainer.style.left = "50%";
+      searchResultsContainer.style.transform = "translate(-50%, -50%)";
+      searchResultsContainer.style.width = "80%";
+    } else {
+      console.log('Element with ID "main" not found.');
+    }
+  });
+}
+
+function addFavicons() {
+  const resultLinks = document.querySelectorAll(".result > .upper > a");
+
+  resultLinks.forEach((link) => {
+    if (!link.querySelector(".favicon")) {
+      const url = new URL(link.href);
+      // const faviconUrl = `${url.origin}/favicon.ico`;
+      const faviconUrl = `https://www.google.com/s2/favicons?domain=${url.origin}&sz=32`;
+
+      const favicon = document.createElement("img");
+      favicon.src = faviconUrl;
+      favicon.className = "favicon";
+      favicon.style.width = "16px";
+      favicon.style.height = "16px";
+      favicon.style.marginRight = "8px";
+      favicon.style.verticalAlign = "middle";
+
+      link.insertBefore(favicon, link.firstChild);
+    }
+  });
+}
+
 (function () {
   "use strict";
+
+  // centerSearchForm();
+  // centerSearchResults();
+
+  document.addEventListener("load", addFavicons, true);
   document.addEventListener("click", onStartpageLinkClick, true);
   cleanSrsltids();
 
