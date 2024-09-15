@@ -179,7 +179,9 @@ function addFavicons() {
   removeFirstOrIgnore(
     document.getElementsByClassName("ay-eo-tpcl ay-eo-tpcl--"),
   );
-  removeFirstOrIgnore(document.getElementsByClassName("feedback-serp-container"));
+  removeFirstOrIgnore(
+    document.getElementsByClassName("feedback-serp-container"),
+  );
   removeFirstOrIgnore(document.getElementsByClassName("w-gl__label"));
   removeFirstOrIgnore(document.getElementsByClassName("layout-web__footer"));
   removeFirstOrIgnore(document.getElementsByClassName("css-1pducxn"));
