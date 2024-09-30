@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pinterest Cleaner Upper
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.0.2
 // @description  Clean up Pinterest
 // @author       BL
 // @match        https://www.pinterest.com/*
@@ -38,10 +38,10 @@ function stopVideos(ignored) {
 function cleanDescription(node) {
   document
     .querySelector('div[data-test-id="maybe-clickthrough-link"]')
-    .remove();
+    ?.remove();
   document
     .querySelector('div[data-test-id="creator-card-profile"]')
-    .parentElement.parentElement.parentElement.parentElement.parentElement.remove();
+    ?.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
 }
 
 function cleanComments(node) {
@@ -121,8 +121,69 @@ function cleanShopByBannerAtTopOfBoard() {
   });
 }
 
+function cleanShoppingAds() {
+  const shoppingAdDivs = document.querySelectorAll(
+    "div.Ch2.zDA.IZT.CKL.tBJ.dyH.iFc.GTB.H2s",
+  );
+
+  shoppingAdDivs.forEach((adDiv) => {
+    let parent = adDiv.closest('div[role="listitem"]');
+    if (parent) {
+      parent.remove();
+      console.debug("Removed shopping container");
+    }
+  });
+}
+
+function cleanIdeasYouMightLove() {
+  const listItems = document.querySelectorAll('div[role="listitem"]');
+
+  listItems.forEach((item) => {
+    if (
+      item.textContent.includes("Ideas you might love") ||
+      item.textContent.includes("Shop similar")
+    ) {
+      item.remove();
+      console.debug('Removed "Ideas you might love" item:', item);
+    }
+  });
+}
+
+function cleanPinFooters() {
+  // Select all divs with the data-test-id="pinrep-footer"
+  const pinFooters = document.querySelectorAll(
+    'div[data-test-id="pinrep-footer"]',
+  );
+
+  pinFooters.forEach((footer) => {
+    const shoppableIndicator = footer.querySelector(
+      '[aria-label="Shoppable Pin indicator"]',
+    );
+
+    if (shoppableIndicator) {
+      const parentPinDiv = footer.closest('div[data-test-id="pin"]');
+
+      if (parentPinDiv) {
+        parentPinDiv.remove();
+        console.log("Removed shoppable pin:", parentPinDiv);
+      }
+    } else {
+      footer.remove();
+      console.debug("Removed pin footer:", footer);
+    }
+  });
+}
+
+function cleanRelatedPins() {
+  setTimeout(() => {
+    cleanIdeasYouMightLove();
+    cleanShoppingAds();
+    cleanPinFooters();
+  }, 1050);
+}
+
 function clean() {
-  console.log("Running");
+  console.log("Cleaning up Pinterest");
   setInterval(function () {
     document.title = "Pinterest";
   }, 1000);
@@ -254,7 +315,36 @@ function clean() {
       }
     }
   });
+
+  waitForKeyElements('div[data-test-id="pinrep-footer"]', function (nodes) {
+    cleanPinFooters();
+  });
+
+  cleanRelatedPins();
+
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === 1) {
+          if (
+            node.matches("div.Ch2.zDA.IZT.CKL.tBJ.dyH.iFc.GTB.H2s") ||
+            node.querySelector("div.Ch2.zDA.IZT.CKL.tBJ.dyH.iFc.GTB.H2s") ||
+            node.textContent.includes("Ideas you might love") ||
+            node.textContent.includes("Shop similar")
+          ) {
+            cleanRelatedPins();
+          }
+        }
+      });
+    });
+  });
+
+  observer.observe(document.querySelector('div[data-test-id="relatedPins"]'), {
+    childList: true,
+    subtree: true,
+  });
 }
+
 let lastUrl = window.location.href;
 setInterval(() => {
   const currentUrl = window.location.href;
@@ -263,4 +353,5 @@ setInterval(() => {
     clean();
   }
 }, 1000);
+
 clean();
