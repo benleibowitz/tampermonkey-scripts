@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pinterest Cleaner Upper
 // @namespace    http://tampermonkey.net/
-// @version      1.0.2
+// @version      1.0.3
 // @description  Clean up Pinterest
 // @author       BL
 // @match        https://www.pinterest.com/*
@@ -31,7 +31,7 @@ function stopVideos(ignored) {
     pic.src = video.poster;
     video.parentElement.appendChild(pic);
     video.remove();
-    console.log("Converted video to pic");
+    console.debug("Converted video to pic");
   }
 }
 
@@ -70,7 +70,7 @@ function cleanShopButtonsFromBoard(node) {
   var buttonsLength = buttons.length;
   for (var i = 0; i < buttonsLength; i++) {
     if (buttons[idx].textContent.toLowerCase() != "organize") {
-      console.log("Removing button: " + buttons[idx].textContent);
+      console.debug("Removing button: " + buttons[idx].textContent);
       buttons[idx].remove();
     } else {
       idx++;
@@ -107,7 +107,7 @@ function cleanWelcomeBackModal(node) {
   var docs = node;
   if (docs.length == 1) {
     docs[0].remove();
-    console.log('Cleaned "welcome back" modal');
+    console.debug('Cleaned "welcome back" modal');
   }
 }
 
@@ -165,7 +165,7 @@ function cleanPinFooters() {
 
       if (parentPinDiv) {
         parentPinDiv.remove();
-        console.log("Removed shoppable pin:", parentPinDiv);
+        console.debug("Removed shoppable pin:", parentPinDiv);
       }
     } else {
       footer.remove();
@@ -182,24 +182,47 @@ function cleanRelatedPins() {
   }, 1050);
 }
 
+function removeBellIcon() {
+  const bellIconDiv = document.querySelector('div[data-test-id="bell-icon"]');
+  if (bellIconDiv) {
+    bellIconDiv.remove();
+    console.debug("Removed bell icon from navbar.");
+  }
+}
+
+function removeMessagesIcon() {
+  const messagesIconDiv = document.querySelector('div[aria-label="Messages"]');
+  if (messagesIconDiv) {
+    var messagesParent = messagesIconDiv.closest(
+      'div[class="XiG zI7 iyn Hsu"]',
+    );
+    messagesParent?.remove();
+    console.debug("Removed messages button");
+  }
+}
+
+function cleanNavBar() {
+  removeBellIcon();
+  removeMessagesIcon();
+}
+
+function observeNavBar() {
+  const observer = new MutationObserver(() => {
+    cleanNavBar();
+  });
+
+  observer.observe(document.getElementById("HeaderContent"), {
+    childList: true,
+    subtree: true,
+  });
+
+  cleanNavBar();
+}
+
 function clean() {
   console.log("Cleaning up Pinterest");
-  setInterval(function () {
-    document.title = "Pinterest";
-  }, 1000);
 
-  for (var i = 0; i < 3; i++) {
-    document
-      .querySelector('div[data-test-id="button-container"]')
-      .firstChild.remove();
-  }
-
-  // Oof
-  var arr = document.querySelector('div[data-test-id="header-Header"]')
-    .firstChild.children[1].firstChild.firstChild.firstChild.children;
-  for (i = 0; i < 3; i++) {
-    arr[1].remove();
-  }
+  observeNavBar();
 
   var currentURL = window.location.href;
   waitForKeyElements('div[role="list"]', function (node) {
