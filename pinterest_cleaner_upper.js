@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pinterest Cleaner Upper
 // @namespace    http://tampermonkey.net/
-// @version      1.0.3
+// @version      1.0.4
 // @description  Clean up Pinterest
 // @author       BL
 // @match        https://www.pinterest.com/*
@@ -201,9 +201,19 @@ function removeMessagesIcon() {
   }
 }
 
+function removeNavBarTabs(tabName) {
+  const navBarTab = document.querySelector(`div[data-test-id="${tabName}"]`);
+
+  navBarTab?.remove();
+  console.debug(`Removed navbar tab: ${tabName}`);
+}
+
 function cleanNavBar() {
   removeBellIcon();
   removeMessagesIcon();
+  removeNavBarTabs("home-tab");
+  removeNavBarTabs("today-tab");
+  removeNavBarTabs("create-tab");
 }
 
 function observeNavBar() {
