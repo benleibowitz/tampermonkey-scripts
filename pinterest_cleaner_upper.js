@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pinterest Cleaner Upper
 // @namespace    http://tampermonkey.net/
-// @version      1.0.4
+// @version      1.0.5
 // @description  Clean up Pinterest
 // @author       BL
 // @match        https://www.pinterest.com/*
@@ -91,16 +91,19 @@ function cleanPicture(node) {
     'div[data-test-id="description-content-container"]',
   );
   var photoContainerParentElement = photoContainer.parentElement;
-  var photoURL = document.querySelector('div[data-test-id="closeup-image"]')
-    .firstChild.firstChild.children[1].firstChild.firstChild.src;
-  var photoIMG = document.createElement("img");
-  photoIMG.setAttribute("src", photoURL);
+  var photoURL = document.querySelector(
+    'div[data-test-id="closeup-image"] img[src]',
+  )?.src;
+  if (photoURL) {
+    var photoIMG = document.createElement("img");
+    photoIMG.setAttribute("src", photoURL);
 
-  photoContainerParentElement.insertBefore(
-    photoIMG,
-    photoContainerParentElement.childNodes[0],
-  );
-  photoContainer.remove();
+    photoContainerParentElement.insertBefore(
+      photoIMG,
+      photoContainerParentElement.childNodes[0],
+    );
+    photoContainer.remove();
+  }
 }
 
 function cleanWelcomeBackModal(node) {
