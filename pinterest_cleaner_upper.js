@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pinterest Cleaner Upper
 // @namespace    http://tampermonkey.net/
-// @version      1.0.5
+// @version      1.0.6
 // @description  Clean up Pinterest
 // @author       BL
 // @match        https://www.pinterest.com/*
@@ -91,10 +91,11 @@ function cleanPicture(node) {
     'div[data-test-id="description-content-container"]',
   );
   var photoContainerParentElement = photoContainer.parentElement;
-  var photoURL = document.querySelector(
+  var photoURLArray = document.querySelectorAll(
     'div[data-test-id="closeup-image"] img[src]',
-  )?.src;
-  if (photoURL) {
+  );
+  if (photoURLArray) {
+    var photoURL = photoURLArray[photoURLArray.length - 1].src;
     var photoIMG = document.createElement("img");
     photoIMG.setAttribute("src", photoURL);
 
