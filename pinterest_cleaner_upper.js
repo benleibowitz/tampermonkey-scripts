@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pinterest Cleaner Upper
 // @namespace    http://tampermonkey.net/
-// @version      1.0.6
+// @version      1.0.7
 // @description  Clean up Pinterest
 // @author       BL
 // @match        https://www.pinterest.com/*
@@ -172,8 +172,8 @@ function cleanPinFooters() {
         console.debug("Removed shoppable pin:", parentPinDiv);
       }
     } else {
-      footer.remove();
-      console.debug("Removed pin footer:", footer);
+      footer.style.display = "none";
+      console.debug("Hid pin footer:", footer);
     }
   });
 }
