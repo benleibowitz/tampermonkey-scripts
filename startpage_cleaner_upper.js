@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Startpage Cleaner Upper
 // @namespace    https://www.benleibowitz.rocks
-// @version      1.0.4
+// @version      1.0.5
 // @description  Clean up unnecessary clutter on startpage.com
 // @author       Ben Leibowitz
 // @match        https://www.startpage.com/*
@@ -172,9 +172,6 @@ function addFavicons() {
   cleanSrsltids();
 
   removeFirstOrIgnore(document.getElementsByClassName("w-gl-attribution"));
-  removeFirstOrIgnore(
-    document.getElementsByClassName("serp-sidebar-app-promo-widget"),
-  );
   removeFirstOrIgnore(document.getElementsByClassName("block-display"));
   removeFirstOrIgnore(
     document.getElementsByClassName("ay-eo-tpcl ay-eo-tpcl--"),
@@ -190,6 +187,9 @@ function addFavicons() {
   document.getElementById("feedback-button-container")?.remove();
   document.querySelector('div[role="contentinfo"]')?.remove();
   document.getElementsByTagName("footer")[0].remove();
+  waitForKeyElements('div[class^="serp-sidebar-app-promo-widget"]', function(nodes) {
+    nodes[0]?.remove();
+  });
   var feedbackWidgets = document.getElementsByClassName("feedback-widget");
   for (const feedbackWidget of feedbackWidgets) {
     feedbackWidget.remove();
