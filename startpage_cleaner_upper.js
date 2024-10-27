@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Startpage Cleaner Upper
 // @namespace    https://www.benleibowitz.rocks
-// @version      1.1.0
+// @version      1.1.1
 // @description  Clean up unnecessary clutter on startpage.com
 // @author       Ben Leibowitz
 // @match        https://www.startpage.com/*
@@ -176,7 +176,9 @@ function removeSponsoredByCard() {
   removeSponsoredByCard();
   document.addEventListener("load", addFavicons, true);
   document.addEventListener("click", onStartpageLinkClick, true);
-  cleanSrsltids();
+  waitForKeyElements('#main a', function(nodes) {
+    cleanSrsltids();
+  });
 
   removeFirstOrIgnore(document.getElementsByClassName("w-gl-attribution"));
   removeFirstOrIgnore(document.getElementsByClassName("block-display"));
