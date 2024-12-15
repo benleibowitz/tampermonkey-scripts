@@ -9,19 +9,21 @@
 // @grant        none
 // ==/UserScript==
 
-(function() {
-    'use strict';
+(function () {
+  "use strict";
 
-    var pageContainer = document.getElementsByClassName('mw-page-container')[0]
-    var observer = new MutationObserver((mutations, observer) => {
-        for (let mutation of mutations) {
-            if (mutation.target.className == 'cn-fundraising') {
-                console.debug('Removing fundraising banner mutation');
-                mutation.target.remove();
-                console.debug('Disconnecting observer');
-                observer.disconnect();
-            }
-        }
-    });
-    observer.observe(pageContainer, {childList: true, subtree: true});
+  var pageContainer = document.getElementsByClassName("mw-page-container")[0];
+  var observer = new MutationObserver((mutations, observer) => {
+    for (let mutation of mutations) {
+      if (mutation.target.className == "cn-fundraising") {
+        console.debug("Removing fundraising banner mutation");
+        mutation.target.remove();
+        console.debug("Disconnecting observer");
+        observer.disconnect();
+      }
+    }
+  });
+  observer.observe(pageContainer, { childList: true, subtree: true });
+
+  document.querySelector('div[class="portal-banner"]')?.remove();
 })();
